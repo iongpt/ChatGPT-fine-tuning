@@ -143,6 +143,27 @@ class TrainGPT:
 
         openai.Model.delete(model_id)
 
+    def list_models(self):
+        models = openai.Model.list()
+        return models
+
+    def list_models_summaries(self):
+        models = self.list_models()
+
+        # Get the number of models
+        num_models = len(models["data"])
+        print(Fore.GREEN + f"You have access to {num_models} number of models." + Style.RESET_ALL)
+
+        # Create a dictionary to count the number of models owned by each entity
+        owners_count = {}
+        for model in models["data"]:
+            owner = model["owned_by"]
+            owners_count[owner] = owners_count.get(owner, 0) + 1
+
+        # Print the summary
+        print("Those models are owned by:")
+        for owner, count in owners_count.items():
+            print(Fore.BLUE + f"{owner}: {count} models" + Style.RESET_ALL)
 
 # Example Usage
 # trainer = TrainGPT()
