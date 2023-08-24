@@ -83,6 +83,22 @@ class TrainGPT:
         self.file_id = file.id
         print(f"File ID: {self.file_id}")
 
+    def list_files(self):
+        files = openai.File.list()
+        print(f"Files: {files}")
+        return files
+
+    def get_file_details(self, file_id=None):
+        if file_id is None:
+            file_id = self.file_id
+
+        if file_id is None:
+            raise ValueError("File not uploaded. Call 'create_file' method first.")
+
+        file = openai.File.retrieve(file_id)
+        print(f"File: {file}")
+        return file
+
     def start_training(self, file_id=None):
         if file_id is None:
             file_id = self.file_id
@@ -165,6 +181,29 @@ class TrainGPT:
         for owner, count in owners_count.items():
             print(Fore.BLUE + f"{owner}: {count} models" + Style.RESET_ALL)
 
+    def list_models_by_owner(self, owner):
+        models = self.list_models()
+
+        # Filter models based on the 'owned_by' parameter
+        owned_models = [model for model in models["data"] if model["owned_by"] == owner]
+
+        if not owned_models:
+            print(Fore.RED + f"No models found for owner: {owner}" + Style.RESET_ALL)
+            return
+
+        for model in owned_models:
+            # Format the 'created' timestamp into a human-readable date
+            created_date = datetime.utcfromtimestamp(model["created"]).strftime('%Y-%m-%d %H:%M:%S')
+
+            # Print the details
+            print(Fore.GREEN + f"Name: {model['id']}" + Style.RESET_ALL)
+            print(Fore.GREEN + f"Created: {created_date}" + Style.RESET_ALL)
+            print(Fore.GREEN + f"Owner: {model['owned_by']}" + Style.RESET_ALL)
+            print(Fore.GREEN + f"Root model: {model['root']}" + Style.RESET_ALL)
+            print(Fore.GREEN + f"Parent model: {model['parent']}" + Style.RESET_ALL)
+            print("-----------------------------")
+
+
 # Example Usage
 # trainer = TrainGPT()
 # trainer.create_file("path/to/file.jsonl")
@@ -183,6 +222,8 @@ def main():
     parser.add_argument("--get-job-details", type=str, help="Get details for a specific job")
     parser.add_argument("--cancel-job", type=str, help="Cancel a specific job")
     parser.add_argument("--list-events", type=str, help="List events for a specific job")
+    parser.add_argument("--list-models-summaries", type=str, help="List models summaries, per owner")
+    parser.add_argument("--list-models-by_owner", type=str, help="List models from an owner")
     parser.add_argument("--delete-model", type=str, help="Delete a specific model")
 
     args = parser.parse_args()
@@ -203,6 +244,10 @@ def main():
         trainer.list_events(args.list_events)
     if args.delete_model:
         trainer.delete_model(args.delete_model)
+    if args.list_models_by_owner:
+        trainer.list_models_by_owner(args.list_models_by_owner)
+    if args.list_models_summaries:
+        trainer.list_models_by_owner(args.list_models_summaries)
 
 
 if __name__ == "__main__":

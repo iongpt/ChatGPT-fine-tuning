@@ -95,18 +95,102 @@ After setting up, you can utilize the `TrainGPT` class in your Python scripts as
     ```python
     trainer.start_training()
     ```
+4. **Listing All Jobs**:
 
-4. **Fetching Job Details**:
+    You can list all your current and past training jobs.
+
+    ```python
+    jobs = trainer.list_jobs()
+    ```
+   You will get something like this:
+
+    ```bash
+   trainer.list_jobs()
+   There are 1 jobs in total.
+   1 jobs of fine_tuning.job.
+   1 jobs succeeded.
+   
+   List of jobs (ordered by creation date):
+   
+   - Job Type: fine_tuning.job
+     ID: ftjob-Sq3nFz3Haqt6fZwqts321iSH
+     Model: gpt-3.5-turbo-0613
+     Created At: 2023-08-24 04:19:56
+     Finished At: 2023-08-24 04:29:55
+     Fine Tuned Model: ft:gpt-3.5-turbo-0613:iongpt::7qwGfk6d
+     Status: succeeded
+     Training File: file-n3kU9Emvvoa8wRrewaafhUv
+   ```
+   When the status is "succeeded" you should have your model ready to use. You can jump to step 7 to find the fine tuned model.
+
+   If you have multiple jobs in the list, you can use the id to fetch the details of a specific job.
+5. **Fetching Job Details**:
 
     You can get detailed statistics of a specific training job.
 
     ```python
     job_details = trainer.get_job_details("specific_job_id")
     ```
+   If something goes wrong, you can cancel a job using
+6. **Cancel a Job**:
+
+    You can cancel a training job if it is still running.
+
+    ```python
+    trainer.cancel_job("specific_job_id")
+    ```
+7. **Find the fine tuned model**:
+   For this we will use the list_models_summaries method.
+    ```python
+    models = trainer.list_models_summaries()
+    ```
+    You will get something like this:
+     ```bash
+   You have access to 61 number of models.
+   Those models are owned by:
+   openai: 20 models
+   openai-dev: 32 models
+   openai-internal: 4 models
+   system: 2 models
+   iongpt: 3 models
+   ```
+   Then, you can use the owner to fetch the details of models from specific owner. The fine tuned model will be in that list.
+8. ```python
+   trainer.list_models_by_owner("iongpt")
+   ```
+You will get something like this:
+   ```bash
+   Name: ada:ft-iongpt:url-mapping-2023-04-12-17-05-19
+   Created: 2023-04-12 17:05:19
+   Owner: iongpt
+   Root model: ada:2020-05-03
+   Parent model: ada:2020-05-03
+   -----------------------------
+   Name: ada:ft-iongpt:url-mapping-2023-04-12-18-07-26
+   Created: 2023-04-12 18:07:26
+   Owner: iongpt
+   Root model: ada:2020-05-03
+   Parent model: ada:ft-iongpt:url-mapping-2023-04-12-17-05-19
+   -----------------------------
+   Name: davinci:ft-iongpt:url-mapping-2023-04-12-15-54-23
+   Created: 2023-04-12 15:54:23
+   Owner: iongpt
+   Root model: davinci:2020-05-03
+   Parent model: davinci:2020-05-03
+   -----------------------------
+   Name: ft:gpt-3.5-turbo-0613:iongpt::7qy7qwVC
+   Created: 2023-08-24 06:28:54
+   Owner: iongpt
+   Root model: sahara:2023-04-20
+   Parent model: sahara:2023-04-20
+   -----------------------------
+   ````
+
 
 ### **Command Line Usage**:
 
-For those who prefer command-line tools, the provided CLI offers a straightforward way to manage the fine-tuning process.
+This part was not tested yet. Please use the Python script usage for now.
+Recommended to use from a python interactive shell.
 
 1. **Uploading a File**:
 
