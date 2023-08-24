@@ -8,12 +8,15 @@ The utilities are wrapped into a single `TrainGPT` class which allows users to m
 ## Features:
 
 - **File Upload**: Easily upload your fine-tuning data files.
+- **File List**: See all your files (Uploaded and results of previous trainings).
+- **File Details**: Get file details.
 - **Start Training**: Begin a new training job using your uploaded data.
 - **List Jobs**: View all your current and past training jobs.
 - **Job Details**: Retrieve detailed information about a specific training job.
 - **Cancel**: Cancel a training job.
 - **Delete**: Delete a training job.
 - **List Models**: View all your current and past fine-tuned models.
+- **List Models Summaries**: View all your models, grouped per owner.
 - **Model Details**: Retrieve detailed information about a specific model.
 - **Delete Model**: Delete a fine-tuned model.
 ---
