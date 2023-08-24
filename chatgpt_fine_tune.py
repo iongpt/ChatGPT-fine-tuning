@@ -5,6 +5,59 @@ import openai
 import argparse
 
 
+def format_jobs_output(jobs_data):
+    # Extract the list of jobs from the data
+    jobs = jobs_data["data"]
+
+    # Initialize counters
+    total_jobs = len(jobs)
+    job_type_count = {}
+    status_count = {}
+
+    # Iterate over jobs to populate counters
+    for job in jobs:
+        # Count job types
+        job_type = job["object"]
+        job_type_count[job_type] = job_type_count.get(job_type, 0) + 1
+
+        # Count job statuses
+        status = job["status"]
+        status_count[status] = status_count.get(status, 0) + 1
+
+    # Start building the output
+    output = []
+
+    # Add total job count
+    output.append(f"There are {total_jobs} jobs in total.")
+
+    # Add job type counts
+    for job_type, count in job_type_count.items():
+        output.append(f"{count} jobs of {job_type}.")
+
+    # Add status counts
+    for status, count in status_count.items():
+        output.append(f"{count} jobs {status}.")
+
+    # Add individual job details
+    output.append("\nList of jobs (ordered by creation date):")
+    for job in sorted(jobs, key=lambda x: x["created_at"]):
+        created_at = datetime.utcfromtimestamp(job["created_at"]).strftime('%Y-%m-%d %H:%M:%S')
+        finished_at = datetime.utcfromtimestamp(job["finished_at"]).strftime('%Y-%m-%d %H:%M:%S') if job[
+            "finished_at"] else None
+        output.append(f"""
+- Job Type: {job["object"]}
+  ID: {job["id"]}
+  Model: {job["model"]}
+  Created At: {created_at}
+  Finished At: {finished_at}
+  Fine Tuned Model: {job["fine_tuned_model"]}
+  Status: {job["status"]}
+  Training File: {job["training_file"]}
+        """)
+
+    return "\n".join(output)
+
+
 class TrainGPT:
     def __init__(self, api_key=None, model_name="gpt-3.5-turbo"):
         if api_key is None:
