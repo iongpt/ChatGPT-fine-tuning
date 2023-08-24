@@ -12,6 +12,7 @@ I was using a collection of curl commands to "interact" with OAI API and it went
 - **File Upload**: Easily upload your fine-tuning data files.
 - **File List**: See all your files (Uploaded and results of previous trainings).
 - **File Details**: Get file details.
+- **Count tokens**: Count tokens with tiktoken library.
 - **Start Training**: Begin a new training job using your uploaded data.
 - **List Jobs**: View all your current and past training jobs.
 - **Job Details**: Retrieve detailed information about a specific training job.
@@ -22,6 +23,12 @@ I was using a collection of curl commands to "interact" with OAI API and it went
 - **Model Details**: Retrieve detailed information about a specific model.
 - **Delete Model**: Delete a fine-tuned model.
 ---
+
+# PSA
+The code contains a `get_token_count()` method that will count the tokens from the training file using `tiktoken` library.
+It will use 3 available encoders: "cl100k_base", "p50k_base", "r50k_base" and will show the results for each one.
+
+**YOU WILL BE CHARGED ABOUT 10 TIMES THAT NUMBER OF TOKENS**. So, if you have 100k tokens returned by the `get_token_count()` method, you will be charged for 1M tokens.
 
 ## Prerequisites:
 

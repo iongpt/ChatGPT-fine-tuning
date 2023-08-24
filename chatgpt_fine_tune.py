@@ -6,6 +6,9 @@ import argparse
 
 from colorama import init, Fore, Style
 
+import json
+import tiktoken
+
 init(autoreset=True)
 
 
@@ -74,8 +77,10 @@ class TrainGPT:
         self.file_id = None
         self.job_id = None
         self.model_id = None
+        self.file_path = None
 
     def create_file(self, file_path):
+        self.file_path = file_path
         file = openai.File.create(
             file=open(file_path, "rb"),
             purpose='fine-tune'
@@ -202,6 +207,42 @@ class TrainGPT:
             print(Fore.GREEN + f"Root model: {model['root']}" + Style.RESET_ALL)
             print(Fore.GREEN + f"Parent model: {model['parent']}" + Style.RESET_ALL)
             print("-----------------------------")
+
+    @staticmethod
+    def num_tokens_from_string(string: str, encoding_name: str) -> int:
+        """Returns the number of tokens in a text string."""
+        encoding = tiktoken.get_encoding(encoding_name)
+        num_tokens = len(encoding.encode(string))
+        return num_tokens
+
+    @staticmethod
+    def count_tokens_from_messages(encoding_name, messages):
+        total_tokens = 0
+        for message in messages:
+            total_tokens += TrainGPT.num_tokens_from_string(message["content"], encoding_name)
+        return total_tokens
+
+    def get_token_count(self, file_path=None):
+        if not file_path and not self.file_path:
+            raise ValueError("Provide a file_path or call 'create_file' method first.")
+
+        file_path = file_path or self.file_path
+        # Using all OpenAI tokenizers. See https://github.com/openai/tiktoken
+        tokenizers = {
+            "cl100k_base": "cl100k_base",
+            "p50k_base": "p50k_base",
+            "r50k_base": "r50k_base",
+        }
+
+        token_counts = {name: 0 for name in tokenizers}
+
+        with open(file_path, "r") as file:
+            for line in file:
+                data = json.loads(line)
+                for encoding_name in tokenizers.keys():
+                    token_counts[encoding_name] += self.count_tokens_from_messages(encoding_name, data["messages"])
+
+        return token_counts
 
 
 # Example Usage
