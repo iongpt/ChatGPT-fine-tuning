@@ -4,6 +4,10 @@ import os
 import openai
 import argparse
 
+from colorama import init, Fore, Style
+
+init(autoreset=True)
+
 
 def format_jobs_output(jobs_data):
     # Extract the list of jobs from the data
@@ -28,23 +32,23 @@ def format_jobs_output(jobs_data):
     output = []
 
     # Add total job count
-    output.append(f"There are {total_jobs} jobs in total.")
+    output.append(Fore.GREEN + f"There are {total_jobs} jobs in total.")
 
     # Add job type counts
     for job_type, count in job_type_count.items():
-        output.append(f"{count} jobs of {job_type}.")
+        output.append(Fore.YELLOW + f"{count} jobs of {job_type}.")
 
     # Add status counts
     for status, count in status_count.items():
-        output.append(f"{count} jobs {status}.")
+        output.append(Fore.CYAN + f"{count} jobs {status}.")
 
     # Add individual job details
-    output.append("\nList of jobs (ordered by creation date):")
+    output.append(Fore.MAGENTA + "\nList of jobs (ordered by creation date):")
     for job in sorted(jobs, key=lambda x: x["created_at"]):
         created_at = datetime.utcfromtimestamp(job["created_at"]).strftime('%Y-%m-%d %H:%M:%S')
         finished_at = datetime.utcfromtimestamp(job["finished_at"]).strftime('%Y-%m-%d %H:%M:%S') if job[
             "finished_at"] else None
-        output.append(f"""
+        output.append(Fore.BLUE + f"""
 - Job Type: {job["object"]}
   ID: {job["id"]}
   Model: {job["model"]}
