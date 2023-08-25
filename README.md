@@ -25,10 +25,17 @@ I was using a collection of curl commands to "interact" with OAI API and it went
 ---
 
 # PSA
-The code contains a `get_token_count()` method that will count the tokens from the training file using `tiktoken` library.
-It will use 3 available encoders: "cl100k_base", "p50k_base", "r50k_base" and will show the results for each one.
+~~The code contains a `get_token_count()` method that will count the tokens from the training file using `tiktoken` library.~~
+~~It will use 3 available encoders: "cl100k_base", "p50k_base", "r50k_base" and will show the results for each one.~~
 
-**YOU WILL BE CHARGED ABOUT 10 TIMES THAT NUMBER OF TOKENS**. So, if you have 100k tokens returned by the `get_token_count()` method, you will be charged for 1M tokens.
+~~**YOU WILL BE CHARGED ABOUT 10 TIMES THAT NUMBER OF TOKENS**. So, if you have 100k tokens returned by the `get_token_count()` method, you will be charged for 1M tokens.~~
+
+I was wrong here. There is an overhead, but is not alwats 10x
+For small files (100, 500, 1000, 2000 tokens), trained tokens are 15k+, It seems you can't go bellow 15k tokens, no matter how small is your training file.
+
+For bigger files, the overhead is still there, but lower. For a file with 3920281 tokens, trained tokens were 4245281, so the overhead is around 6%.
+
+**There is an overhead that will be 10x on very small files, but it gets to bellow 10% on larger files**
 
 ## Prerequisites:
 
