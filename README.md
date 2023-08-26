@@ -33,7 +33,8 @@ I was using a collection of curl commands to "interact" with OAI API and it went
 I was wrong here. There is an overhead, but is not alwats 10x
 For small files (100, 500, 1000, 2000 tokens), trained tokens are 15k+, It seems you can't go bellow 15k tokens, no matter how small is your training file.
 
-For bigger files, the overhead is still there, but lower. For a file with 3920281 tokens, trained tokens were 4245281, so the overhead is around 6%.
+For bigger files, the overhead is still there, but lower. For a file with 3 920 281 tokens, trained tokens were 4 245 281, so the overhead is around 6%.
+For a file with 40 378 413 counted tokens, trained tokens were: 43 720 882.
 
 **There is an overhead that will be 10x on very small files, but it gets to bellow 10% on larger files**
 
