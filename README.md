@@ -38,6 +38,14 @@ For a file with 40 378 413 counted tokens, trained tokens were: 43 720 882.
 
 **There is an overhead that will be 10x on very small files, but it gets to bellow 10% on larger files**
 
+Here is a quick table with the overhead at different token levles:
+
+|Number of tokens in the training file|Number of charged tokens|Overhead|
+|:-|:-|:-|
+|1 426|15 560|1091%|
+|3 920 281|4 245 281|8.29%|
+|40 378 413|43 720 882|8.27%|
+
 ## Prerequisites:
 
 - **API Key**: Ensure you have set up your OpenAI API key. You can set it as an environment variable named `OPENAI_API_KEY`.
