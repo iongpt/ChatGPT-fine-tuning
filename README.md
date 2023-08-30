@@ -91,7 +91,6 @@ Data needs to be in JSONL format:
 ```
 Save it as `data.jsonl` in the root directory of the project.
 
-
 ## Detailed Usage:
 
 ### **Python Script Usage**:
