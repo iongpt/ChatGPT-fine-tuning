@@ -93,6 +93,13 @@ class TrainGPT:
         print(f"Files: {files}")
         return files
 
+    def delete_file(self, file_id=None):
+        if file_id is None:
+            raise ValueError("File not set.")
+
+        openai.File.delete(file_id)
+        print(f"File ID: {self.file_id} deleted.")
+
     def get_file_details(self, file_id=None):
         if file_id is None:
             file_id = self.file_id
