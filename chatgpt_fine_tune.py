@@ -88,17 +88,26 @@ class TrainGPT:
         self.file_id = file.id
         print(f"File ID: {self.file_id}")
 
-    def list_files(self):
+    def list_files(self, field='bytes', direction='asc'):
         files = openai.File.list()
-        print(f"Files: {files}")
-        return files
+        file_data = files['data']
+
+        if field:
+            file_data = sorted(file_data, key=lambda x: x[field], reverse=(direction == 'desc'))
+
+        print(f"{Fore.GREEN}{'ID':<30}{'Bytes (MB)':<20}{'Created At'}{Style.RESET_ALL}")
+        for file in file_data:
+            created_at = datetime.fromtimestamp(file['created_at']).strftime('%d/%m/%Y %H:%M')
+            bytes_mb = file['bytes'] / (1024 * 1024)
+            print(
+                f"{Fore.CYAN}{file['id']:<30}{Fore.YELLOW}{bytes_mb:.2f} MB          {Fore.MAGENTA}{created_at}{Style.RESET_ALL}")
 
     def delete_file(self, file_id=None):
         if file_id is None:
             raise ValueError("File not set.")
 
         openai.File.delete(file_id)
-        print(f"File ID: {self.file_id} deleted.")
+        print(f"File ID: {file_id} deleted.")
 
     def get_file_details(self, file_id=None):
         if file_id is None:
