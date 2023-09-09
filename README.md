@@ -47,6 +47,7 @@ Here is a quick table with the overhead at different token levles:
 |92 516 393 | File exceeds maximum size of 50000000 tokens for fine-tuning | | |
 |46 860 839 |48 688 812| Here they removed some rows as "moderation"|
 |25 870 859 |26 903 007|9.61%|
+|41 552 537 |43 404 802 |9.54%|
 
 ****It seems that there is a limitation to 50 000 000 tokens****
 
