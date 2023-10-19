@@ -17,7 +17,7 @@ I was using a collection of curl commands to "interact" with OAI API and it went
 - **Job Details**: Retrieve detailed information about a specific training job.
 - **Cancel**: Cancel a training job.
 - **Delete**: Delete a training job.
-- **List Models**: View all your current and past fine-tuned models.
+- **List Models**: View all your current and past fine-tuned models, filtered per your models and standard models
 - **List Models Summaries**: View all your models, grouped per owner.
 - **Model Details**: Retrieve detailed information about a specific model.
 - **Delete Model**: Delete a fine-tuned model.
@@ -58,6 +58,7 @@ Here is a quick table with the overhead at different token levles:
 ```angular2html
 export OPENAI_API_KEY="your_api_key"
 ```
+
 
 ## Installation:
 
@@ -248,7 +249,6 @@ For any command that requires a specific job or file ID, you can provide it as a
 ```bash
 python train_gpt_cli.py --get-job-details your_job_id
 ```
-
 
 ## ToDo
 1. Add support for inference on the custom fine tune models
