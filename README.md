@@ -2,8 +2,10 @@
 
 # ChatGPT 3.5 Fine-tuning Utilities
 
+
 This project provides a set of utilities to assist users in fine-tuning the ChatGPT 3.5 model with OpenAI. 
 The utilities are wrapped into a single `TrainGPT` class which allows users to manage the entire fine-tuning lifecycle - from uploading data files, to starting training jobs, monitoring their progress, and managing the trained models.
+
 
 I was using a collection of curl commands to "interact" with OAI API and it went out of control, so I started to group things together. I work a lot from the interactive Python console to test and "play" with things, so having things grouped up helps. I also plan to release the other collections for dealing with inference for custom models and managing the assests (fiels, embeddings, etc)
 
